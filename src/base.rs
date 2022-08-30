@@ -1,3 +1,5 @@
+#[cfg(target_arch = "wasm32")] use std::time::Duration;
+
 use crate::Tasks;
 
 #[derive(serde::Deserialize, serde::Serialize, Default)]
@@ -6,7 +8,7 @@ pub struct VigilantDoodle {
     tasks: Tasks,
 
     #[serde(skip)]
-    is_ppp_set: bool,
+    is_setup: bool,
 }
 
 impl VigilantDoodle {
@@ -31,9 +33,9 @@ impl eframe::App for VigilantDoodle {
     /// Called each time the UI needs repainting, which may be many times per second.
     /// Put your widgets into a `SidePanel`, `TopPanel`, `CentralPanel`, `Window` or `Area`.
     fn update(&mut self, ctx: &egui::Context, _frame: &mut eframe::Frame) {
-        if !self.is_ppp_set {
+        if !self.is_setup {
             ctx.set_pixels_per_point(2.);
-            self.is_ppp_set = true;
+            self.is_setup = true;
         }
 
         #[cfg(not(target_arch = "wasm32"))]
@@ -55,5 +57,11 @@ impl eframe::App for VigilantDoodle {
         egui::CentralPanel::default().show(ctx, |_ui| {
             self.tasks.update(ctx, _frame);
         });
+    }
+
+    #[cfg(target_arch = "wasm32")]
+    fn auto_save_interval(&self) -> Duration {
+        // on wasm save on shutdown doesn't work for me
+        Duration::from_secs(5)
     }
 }
