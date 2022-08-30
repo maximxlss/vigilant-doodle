@@ -28,7 +28,7 @@ fn main() {
     eframe::start_web(
         "the_canvas_id", // hardcode it
         web_options,
-        Box::new(|cc| Box::new(vigilant_doodle::VigilantDoodle::new(cc))),
+        Box::new(|cc| Box::new(vigilant_doodle::Tasks::new(cc))),
     )
     .expect("failed to start eframe");
 }

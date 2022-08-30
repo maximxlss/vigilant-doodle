@@ -1,4 +1,9 @@
 #![warn(clippy::all, rust_2018_idioms)]
 
-mod app;
-pub use app::VigilantDoodle;
+mod tasks;
+pub use tasks::Tasks;
+
+mod base;
+pub use base::VigilantDoodle;
+
+pub mod utils;
