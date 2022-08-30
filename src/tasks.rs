@@ -1,7 +1,7 @@
 mod types;
-use egui::{Ui, Align::*, Layout, RichText, Color32};
-use types::Task;
 use chrono::prelude::*;
+use egui::{Align::*, Color32, Layout, RichText, Ui};
+use types::Task;
 
 use crate::utils::format_datetime;
 
@@ -14,7 +14,7 @@ pub struct Tasks {
     #[serde(skip)]
     task_text_entry: String,
     #[serde(skip)]
-    deleting_task_idx: Option<usize>
+    deleting_task_idx: Option<usize>,
 }
 
 impl Tasks {
@@ -27,11 +27,17 @@ impl Tasks {
         ui.with_layout(Layout::top_down(Center), |ui| {
             ui.heading("Are you sure?");
             ui.label(format!("About to delete \"{}\"", self.tasks[task_idx].text));
-            
         });
         ui.with_layout(Layout::bottom_up(Center), |ui| {
             ui.horizontal_wrapped(|ui| {
-                if ui.button(RichText::new("Delete").background_color(Color32::DARK_RED).color(Color32::WHITE)).clicked() {
+                if ui
+                    .button(
+                        RichText::new("Delete")
+                            .background_color(Color32::DARK_RED)
+                            .color(Color32::WHITE),
+                    )
+                    .clicked()
+                {
                     self.tasks.remove(task_idx);
                     self.deleting_task_idx = None;
                 }
@@ -63,15 +69,16 @@ impl Tasks {
     }
 }
 
-
-
 impl eframe::App for Tasks {
     fn update(&mut self, ctx: &egui::Context, _frame: &mut eframe::Frame) {
         egui::CentralPanel::default().show(ctx, |ui| {
             ui.heading("Tasks");
             ui.horizontal_top(|ui| {
-                if (ui.text_edit_singleline(&mut self.task_text_entry).lost_focus() && ui.input().key_pressed(egui::Key::Enter))
-                   || ui.button("Create task").clicked()
+                if (ui
+                    .text_edit_singleline(&mut self.task_text_entry)
+                    .lost_focus()
+                    && ui.input().key_pressed(egui::Key::Enter))
+                    || ui.button("Create task").clicked()
                 {
                     self.tasks.push(Task::new(self.task_text_entry.clone()));
                     self.task_text_entry.clear();
@@ -86,11 +93,11 @@ impl eframe::App for Tasks {
         });
         if let Some(task_idx) = self.deleting_task_idx {
             egui::Window::new("Delete task")
-              .default_width(100.)
-              .default_height(200.)
-              .show(ctx, |ui| {
-                self.delete_task_confirmation(ui, task_idx);
-            });
+                .default_width(100.)
+                .default_height(200.)
+                .show(ctx, |ui| {
+                    self.delete_task_confirmation(ui, task_idx);
+                });
         }
     }
 }

@@ -9,8 +9,10 @@ fn main() {
     // Log to stdout (if you run with `RUST_LOG=debug`).
     tracing_subscriber::fmt::init();
 
-    let mut native_options = eframe::NativeOptions::default();
-    native_options.default_theme = Theme::Dark;
+    let native_options = eframe::NativeOptions {
+        default_theme: Theme::Dark,
+        ..Default::default()
+    };
     eframe::run_native(
         "Vigilant Doodle",
         native_options,
@@ -27,8 +29,10 @@ fn main() {
     // Redirect tracing to console.log and friends:
     tracing_wasm::set_as_global_default();
 
-    let mut web_options = eframe::WebOptions::default();
-    web_options.default_theme = Theme::Dark;
+    let web_options = eframe::WebOptions {
+        default_theme: Theme::Dark,
+        ..Default::default()
+    };
     eframe::start_web(
         "the_canvas_id", // hardcode it
         web_options,

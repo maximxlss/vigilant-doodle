@@ -12,7 +12,6 @@ pub struct VigilantDoodle {
 impl VigilantDoodle {
     /// Called once before the first frame.
     pub fn new(cc: &eframe::CreationContext<'_>) -> Self {
-
         // Load previous app state (if any).
         // Note that you must enable the `persistence` feature for this to work.
         if let Some(storage) = cc.storage {
@@ -32,7 +31,6 @@ impl eframe::App for VigilantDoodle {
     /// Called each time the UI needs repainting, which may be many times per second.
     /// Put your widgets into a `SidePanel`, `TopPanel`, `CentralPanel`, `Window` or `Area`.
     fn update(&mut self, ctx: &egui::Context, _frame: &mut eframe::Frame) {
-
         if !self.is_ppp_set {
             ctx.set_pixels_per_point(2.);
             self.is_ppp_set = true;
@@ -59,4 +57,3 @@ impl eframe::App for VigilantDoodle {
         });
     }
 }
-

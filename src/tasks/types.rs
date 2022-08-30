@@ -6,7 +6,7 @@ pub struct Task {
     pub text: String,
     pub is_done: bool,
     pub created_at: DateTime<Local>,
-    pub done_at: Option<DateTime<Local>>
+    pub done_at: Option<DateTime<Local>>,
 }
 
 impl Task {
