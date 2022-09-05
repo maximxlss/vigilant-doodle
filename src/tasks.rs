@@ -54,11 +54,10 @@ impl Tasks {
             if ui.checkbox(&mut task.is_done, &task.text).changed() && task.is_done {
                 task.done_at = Some(Local::now());
             }
-            if ui.small_button("🗑").clicked() && self.deleting_task_idx.is_none() {
-                self.deleting_task_idx = Some(task_idx);
-            };
-
             ui.with_layout(Layout::right_to_left(Center), |ui| {
+                if ui.small_button("🗑").clicked() && self.deleting_task_idx.is_none() {
+                    self.deleting_task_idx = Some(task_idx);
+                };
                 ui.with_layout(Layout::top_down(Max), |ui| {
                     ui.small(format!("created {}", format_datetime(task.created_at)));
                     if let Some(timestamp) = task.done_at {
