@@ -13,7 +13,7 @@ pub struct Notes {
     pub notes: Vec<Note>,
 
     #[serde(skip)]
-    task_text_entry: String,
+    note_text_entry: String,
     #[serde(skip)]
     deleting_note_idx: Option<usize>,
     #[serde(skip)]
@@ -88,15 +88,18 @@ impl eframe::App for Notes {
         egui::CentralPanel::default().show(ctx, |ui| {
             ui.heading("Notes");
             ui.horizontal_top(|ui| {
-                let text_edit = TextEdit::singleline(&mut self.task_text_entry).hint_text("Title");
-                let resp = ui.add(text_edit);
-                if (resp.lost_focus()
-                    && ui.input().key_pressed(egui::Key::Enter))
-                   || ui.button("Create a note").clicked()
-                {
-                    self.notes.push(Note::new(self.task_text_entry.clone()));
-                    self.task_text_entry.clear();
-                }
+                ui.with_layout(Layout::right_to_left(Min), |ui| {
+                    let text_edit = TextEdit::singleline(&mut self.note_text_entry);
+                    let button_resp = ui.button("Create note");
+                    let test_edit_resp = ui.add_sized((ui.available_width(), 0f32), text_edit);
+                    if (test_edit_resp.lost_focus()
+                        && ui.input().key_pressed(egui::Key::Enter))
+                    || button_resp.clicked()
+                    {
+                        self.notes.push(Note::new(self.note_text_entry.clone()));
+                        self.note_text_entry.clear();
+                    }
+                });
             });
             for task_idx in 0..self.notes.len() {
                 ui.separator();
