@@ -1,6 +1,6 @@
 mod types;
 use chrono::prelude::*;
-use egui::{Align::*, Color32, Layout, RichText, Ui, TextEdit};
+use egui::{Align::*, Color32, Layout, RichText, TextEdit, Ui};
 use types::Task;
 
 use crate::utils::format_datetime;
@@ -78,9 +78,8 @@ impl eframe::App for Tasks {
                     let text_edit = TextEdit::singleline(&mut self.task_text_entry);
                     let button_resp = ui.button("Create task");
                     let test_edit_resp = ui.add_sized((ui.available_width(), 0f32), text_edit);
-                    if (test_edit_resp.lost_focus()
-                        && ui.input().key_pressed(egui::Key::Enter))
-                    || button_resp.clicked()
+                    if (test_edit_resp.lost_focus() && ui.input().key_pressed(egui::Key::Enter))
+                        || button_resp.clicked()
                     {
                         self.tasks.push(Task::new(self.task_text_entry.clone()));
                         self.task_text_entry.clear();

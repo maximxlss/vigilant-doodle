@@ -1,7 +1,7 @@
 mod types;
 
 use chrono::prelude::*;
-use egui::{Align::*, Color32, Layout, RichText, Ui, TextEdit};
+use egui::{Align::*, Color32, Layout, RichText, TextEdit, Ui};
 use types::Note;
 
 use crate::utils::format_datetime;
@@ -29,7 +29,10 @@ impl Notes {
     fn delete_note_confirmation(&mut self, ui: &mut Ui, task_idx: usize) {
         ui.with_layout(Layout::top_down(Center), |ui| {
             ui.heading("Are you sure?");
-            ui.label(format!("About to delete \"{}\"", self.notes[task_idx].title));
+            ui.label(format!(
+                "About to delete \"{}\"",
+                self.notes[task_idx].title
+            ));
         });
         ui.with_layout(Layout::bottom_up(Center), |ui| {
             ui.horizontal_wrapped(|ui| {
@@ -52,7 +55,10 @@ impl Notes {
     }
 
     fn show_note_window(&mut self, ui: &mut Ui, task_idx: usize) {
-        if ui.text_edit_multiline(&mut self.notes[task_idx].content).changed() {
+        if ui
+            .text_edit_multiline(&mut self.notes[task_idx].content)
+            .changed()
+        {
             self.notes[task_idx].edited_at = Some(Local::now());
         };
     }
@@ -60,7 +66,13 @@ impl Notes {
     fn show_note(&mut self, ui: &mut Ui, note_idx: usize) {
         let note = &mut self.notes[note_idx];
         ui.horizontal(|ui| {
-            if ui.small_button("Open").clicked() && self.opened_note_idxs.iter().position(|x| *x == note_idx).is_none() {
+            if ui.small_button("Open").clicked()
+                && self
+                    .opened_note_idxs
+                    .iter()
+                    .position(|x| *x == note_idx)
+                    .is_none()
+            {
                 self.opened_note_idxs.push(note_idx);
             };
             ui.heading(&note.title);
@@ -92,9 +104,8 @@ impl eframe::App for Notes {
                     let text_edit = TextEdit::singleline(&mut self.note_text_entry);
                     let button_resp = ui.button("Create note");
                     let test_edit_resp = ui.add_sized((ui.available_width(), 0f32), text_edit);
-                    if (test_edit_resp.lost_focus()
-                        && ui.input().key_pressed(egui::Key::Enter))
-                    || button_resp.clicked()
+                    if (test_edit_resp.lost_focus() && ui.input().key_pressed(egui::Key::Enter))
+                        || button_resp.clicked()
                     {
                         self.notes.push(Note::new(self.note_text_entry.clone()));
                         self.note_text_entry.clear();
@@ -126,7 +137,11 @@ impl eframe::App for Notes {
                     self.show_note_window(ui, note_idx);
                 });
             if !open {
-                let idx = self.opened_note_idxs.iter().position(|x| *x == note_idx).unwrap();
+                let idx = self
+                    .opened_note_idxs
+                    .iter()
+                    .position(|x| *x == note_idx)
+                    .unwrap();
                 self.opened_note_idxs.remove(idx);
             }
         }

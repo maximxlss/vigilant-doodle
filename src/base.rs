@@ -3,13 +3,13 @@ use std::time::Duration;
 
 use egui::{ScrollArea, SidePanel};
 
-use crate::{Tasks, Notes};
+use crate::{Notes, Tasks};
 
 #[derive(serde::Deserialize, serde::Serialize, Default, PartialEq)]
 enum SelectedApp {
     #[default]
     Tasks,
-    Notes
+    Notes,
 }
 
 #[derive(serde::Deserialize, serde::Serialize, Default)]
@@ -70,11 +70,9 @@ impl eframe::App for VigilantDoodle {
             });
         });
 
-        egui::CentralPanel::default().show(ctx, |_ui| {
-            match self.selected_app {
-                SelectedApp::Tasks => self.tasks.update(ctx, _frame),
-                SelectedApp::Notes => self.notes.update(ctx, _frame),
-            }
+        egui::CentralPanel::default().show(ctx, |_ui| match self.selected_app {
+            SelectedApp::Tasks => self.tasks.update(ctx, _frame),
+            SelectedApp::Notes => self.notes.update(ctx, _frame),
         });
     }
 
