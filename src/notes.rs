@@ -67,11 +67,7 @@ impl Notes {
         let note = &mut self.notes[note_idx];
         ui.horizontal(|ui| {
             if ui.small_button("Open").clicked()
-                && self
-                    .opened_note_idxs
-                    .iter()
-                    .position(|x| *x == note_idx)
-                    .is_none()
+                && !self.opened_note_idxs.iter().any(|x| *x == note_idx)
             {
                 self.opened_note_idxs.push(note_idx);
             };
