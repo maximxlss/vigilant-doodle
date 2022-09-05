@@ -51,7 +51,8 @@ impl eframe::App for VigilantDoodle {
     /// Put your widgets into a `SidePanel`, `TopPanel`, `CentralPanel`, `Window` or `Area`.
     fn update(&mut self, ctx: &egui::Context, _frame: &mut eframe::Frame) {
         if !self.is_setup {
-            #[cfg(not(target_arch = "wasm32"))] ctx.set_pixels_per_point(2.);
+            #[cfg(not(target_arch = "wasm32"))]
+            ctx.set_pixels_per_point(2.);
             self.is_setup = true;
         }
 
