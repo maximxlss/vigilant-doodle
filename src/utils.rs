@@ -11,8 +11,8 @@ pub fn format_datetime(dt: DateTime<Local>) -> String {
     } else if diff < Dur::days(1) {
         dt.format("at %H:%M").to_string()
     } else if dt.year() == now.year() {
-        dt.format("at %H:%M %d/%m").to_string()
+        dt.format("at %H:%M %B %d ").to_string()
     } else {
-        dt.format("at %H:%M %d/%m/%Y").to_string()
+        dt.format("at %H:%M %d.%m.%Y").to_string()
     }
 }
