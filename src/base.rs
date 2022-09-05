@@ -5,11 +5,16 @@ use egui::{ScrollArea, SidePanel};
 
 use crate::{Notes, Tasks};
 
-#[derive(serde::Deserialize, serde::Serialize, Default, PartialEq)]
+#[derive(serde::Deserialize, serde::Serialize, PartialEq)]
 enum SelectedApp {
-    #[default]
     Tasks,
     Notes,
+}
+
+impl Default for SelectedApp {
+    fn default() -> Self {
+        SelectedApp::Tasks
+    }
 }
 
 #[derive(serde::Deserialize, serde::Serialize, Default)]
