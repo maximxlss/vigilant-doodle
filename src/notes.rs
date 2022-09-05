@@ -65,11 +65,12 @@ impl Notes {
             };
             ui.heading(&note.title);
             ui.with_layout(Layout::right_to_left(Center), |ui| {
-                if let Some(timestamp) = note.edited_at {
-                    ui.small(format!("edited {}", format_datetime(timestamp)));
-                }
-                ui.add_space(1.);
-                ui.small(format!("created {}", format_datetime(note.created_at)));
+                ui.with_layout(Layout::top_down(Max), |ui| {
+                    ui.small(format!("created {}", format_datetime(note.created_at)));
+                    if let Some(timestamp) = note.edited_at {
+                        ui.small(format!("edited {}", format_datetime(timestamp)));
+                    }
+                });
                 if ui.small_button("🗑").clicked() && self.deleting_note_idx.is_none() {
                     self.deleting_note_idx = Some(note_idx);
                 };
