@@ -74,11 +74,10 @@ impl eframe::App for Tasks {
         egui::CentralPanel::default().show(ctx, |ui| {
             ui.heading("Tasks");
             ui.horizontal_top(|ui| {
-                if (ui
-                    .text_edit_singleline(&mut self.task_text_entry)
-                    .lost_focus()
+                let resp = ui.text_edit_singleline(&mut self.task_text_entry);
+                if (resp.lost_focus()
                     && ui.input().key_pressed(egui::Key::Enter))
-                    || ui.button("Create task").clicked()
+                   || ui.button("Create task").clicked()
                 {
                     self.tasks.push(Task::new(self.task_text_entry.clone()));
                     self.task_text_entry.clear();
