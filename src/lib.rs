@@ -3,6 +3,9 @@
 mod tasks;
 pub use tasks::Tasks;
 
+mod notes;
+pub use notes::Notes;
+
 mod base;
 pub use base::VigilantDoodle;
 

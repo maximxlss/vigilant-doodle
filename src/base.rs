@@ -3,12 +3,13 @@ use std::time::Duration;
 
 use egui::{ScrollArea, SidePanel};
 
-use crate::Tasks;
+use crate::{Tasks, Notes};
 
 #[derive(serde::Deserialize, serde::Serialize, Default, PartialEq)]
 enum SelectedApp {
     #[default]
-    Tasks
+    Tasks,
+    Notes
 }
 
 #[derive(serde::Deserialize, serde::Serialize, Default)]
@@ -16,6 +17,7 @@ enum SelectedApp {
 pub struct VigilantDoodle {
     selected_app: SelectedApp,
     tasks: Tasks,
+    notes: Notes,
 
     #[serde(skip)]
     is_setup: bool,
@@ -63,13 +65,15 @@ impl eframe::App for VigilantDoodle {
         SidePanel::left("side_panel").show(ctx, |ui| {
             ui.heading("Apps");
             ScrollArea::vertical().show(ui, |ui| {
-                ui.selectable_value(&mut self.selected_app, SelectedApp::Tasks, "✏ Tasks")
+                ui.selectable_value(&mut self.selected_app, SelectedApp::Tasks, "✏ Tasks");
+                ui.selectable_value(&mut self.selected_app, SelectedApp::Notes, "🗒 Notes");
             });
         });
 
         egui::CentralPanel::default().show(ctx, |_ui| {
             match self.selected_app {
-                SelectedApp::Tasks => self.tasks.update(ctx, _frame)
+                SelectedApp::Tasks => self.tasks.update(ctx, _frame),
+                SelectedApp::Notes => self.notes.update(ctx, _frame),
             }
         });
     }
