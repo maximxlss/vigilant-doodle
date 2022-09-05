@@ -59,11 +59,11 @@ impl Tasks {
             };
 
             ui.with_layout(Layout::right_to_left(Center), |ui| {
-                ui.small(format!("created {}", format_datetime(task.created_at)));
-                ui.add_space(1.);
                 if let Some(timestamp) = task.done_at {
                     ui.small(format!("done {}", format_datetime(timestamp)));
                 }
+                ui.add_space(1.);
+                ui.small(format!("created {}", format_datetime(task.created_at)));
             });
         });
     }
