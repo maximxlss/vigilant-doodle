@@ -18,8 +18,16 @@ self.addEventListener('install', function (e) {
 /* Serve cached content when offline */
 self.addEventListener('fetch', function (e) {
   e.respondWith(
-    caches.match(e.request).then(function (response) {
-      return response || fetch(e.request);
+    caches.match(e.request).then(async function (response) {
+      try {
+        return await fetch(e.request);
+      } catch (e) {
+        if (e instanceof TypeError && response) {
+          return response;
+        } else {
+          throw e;
+        }
+      }
     })
   );
 });
