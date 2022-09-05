@@ -75,7 +75,7 @@ impl eframe::App for VigilantDoodle {
             });
         });
 
-        egui::CentralPanel::default().show(ctx, |_ui| match self.selected_app {
+        SidePanel::right("main_panel").show(ctx, |_ui| match self.selected_app {
             SelectedApp::Tasks => self.tasks.update(ctx, _frame),
             SelectedApp::Notes => self.notes.update(ctx, _frame),
         });
