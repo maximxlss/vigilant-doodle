@@ -1,11 +1,20 @@
 #[cfg(target_arch = "wasm32")]
 use std::time::Duration;
 
+use egui::{ScrollArea, SidePanel};
+
 use crate::Tasks;
+
+#[derive(serde::Deserialize, serde::Serialize, Default, PartialEq)]
+enum SelectedApp {
+    #[default]
+    Tasks
+}
 
 #[derive(serde::Deserialize, serde::Serialize, Default)]
 #[serde(default)]
 pub struct VigilantDoodle {
+    selected_app: SelectedApp,
     tasks: Tasks,
 
     #[serde(skip)]
@@ -51,12 +60,17 @@ impl eframe::App for VigilantDoodle {
             });
         });
 
-        egui::SidePanel::left("side_panel").show(ctx, |ui| {
-            ui.heading("Side Panel");
+        SidePanel::left("side_panel").show(ctx, |ui| {
+            ui.heading("Apps");
+            ScrollArea::vertical().show(ui, |ui| {
+                ui.selectable_value(&mut self.selected_app, SelectedApp::Tasks, "✏ Tasks")
+            });
         });
 
         egui::CentralPanel::default().show(ctx, |_ui| {
-            self.tasks.update(ctx, _frame);
+            match self.selected_app {
+                SelectedApp::Tasks => self.tasks.update(ctx, _frame)
+            }
         });
     }
 
