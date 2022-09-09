@@ -1,6 +1,6 @@
 {
-  "name": "egui Template PWA",
-  "short_name": "egui-template-pwa",
+  "name": "Vigilant Doodle",
+  "short_name": "vigilant-doodle",
   "icons": [
     {
       "src": "./icon-256.png",
@@ -24,5 +24,5 @@
   "start_url": "./index.html",
   "display": "standalone",
   "background_color": "white",
-  "theme_color": "white"
+  "theme_color": "black"
 }
